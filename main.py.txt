@@ -1,0 +1,20 @@
+from flask import Flask, request, jsonify
+
+app = Flask(__name__)
+received_data = []
+
+@app.route('/data', methods=['POST'])
+def receive_data():
+    data = request.json.get('data')
+    if data:
+        received_data.append(data)
+        return jsonify({'result': 'ok'})
+    else:
+        return jsonify({'result': 'no data'}), 400
+
+@app.route('/')
+def index():
+    return '<br>'.join(received_data[-30:])
+
+if __name__ == "__main__":
+    app.run()
